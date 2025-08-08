@@ -1,0 +1,65 @@
+* {
+  padding: 0;
+  margin: 0;
+  font-family: monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
+  border: soild red 1px;
+  box-sizing: border-box;
+}
+
+body{ 
+  height: 100svh;
+  background-image: url('./assets/wallpaper.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: white;
+  font-size: 12px;
+}
+
+main {
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+label {
+  font-weight:bolder;
+  color: red;
+}
+
+.terminal-container {
+  background-color: rgba(20, 10, 50, 0.5);
+  display: flex;
+}
+
+.foucsed {
+  border: 2px blue solid
+}
+
+.terminal {
+  padding: 10px;
+  height: 100%;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: rgba(0,0,0, .5);
+}
+
+.input-container {
+  display: flex;
+}
+
+input {
+  outline: 0;
+  border: none;
+  color: white;
+  padding-left: 7px;
+  flex: 1;
+  background-color: transparent;
+  font-size: inherit;
+}
