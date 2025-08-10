@@ -26,32 +26,38 @@ main {
   gap: 10px;
 }
 
-label {
-  font-weight:bolder;
-  color: red;
-}
+.terminal-container, .input-container{
 
-.terminal-container {
-  background-color: rgba(20, 10, 50, 0.5);
   display: flex;
 }
 
-.foucsed {
-  border: 2px blue solid
+.focused{
+  border: 1px lightblue solid
+}
+
+img {
+  width: 30%
 }
 
 .terminal {
+  background-color: rgba(0,0,30, .6);
+  border-radius: 10px;
   padding: 10px;
   height: 100%;
   display: flex;
-  flex: 1;
   flex-direction: column;
-  overflow: hidden;
-  background-color: rgba(0,0,0, .5);
+  flex: 1;
+  overflow: scroll;
+  scrollbar-width: none;
 }
 
-.input-container {
-  display: flex;
+.terminal::after {
+   content: "";
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  backdrop-filter: blur(6px);
+
 }
 
 input {
@@ -62,4 +68,31 @@ input {
   flex: 1;
   background-color: transparent;
   font-size: inherit;
+}
+
+.prompt {
+  color: #b0c0ff;
+}
+
+a {
+  color: #c3e2FF;
+}
+
+.white {
+  color: white;
+}
+.red {
+  color: red;
+}
+.blue {
+  color: #b0c0ff;
+}
+.yellow {
+  color: yellow
+}
+.bold {
+  font-weight: bolder;
+}
+.under-line {
+  text-decoration: underline;
 }
