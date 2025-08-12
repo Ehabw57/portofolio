@@ -26,9 +26,28 @@ main {
   gap: 10px;
 }
 
-.terminal-container, .input-container{
-
+.term-container, .input-container{
   display: flex;
+}
+
+.input-container {
+  justify-self: stretch;
+}
+
+.term-container {
+  align-self: stretch;
+  flex: 1 1 0;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.row {
+  flex-direction: row;
+}
+
+.column {
+  flex-direction: column;
 }
 
 .focused{
@@ -40,13 +59,15 @@ img {
 }
 
 .terminal {
+  position: relative;
+  align-self: stretch;
+  justify-self: stretch;
   background-color: rgba(0,0,30, .6);
   border-radius: 10px;
   padding: 10px;
-  height: 100%;
   display: flex;
   flex-direction: column;
-  flex: 1;
+  flex: 1 1 0;
   overflow: scroll;
   scrollbar-width: none;
 }
@@ -55,6 +76,7 @@ img {
    content: "";
   width: 100%;
   height: 100%;
+  position: absolute;
   z-index: -1;
   backdrop-filter: blur(6px);
 
@@ -65,9 +87,13 @@ input {
   border: none;
   color: white;
   padding-left: 7px;
-  flex: 1;
   background-color: transparent;
   font-size: inherit;
+  flex:1
+}
+
+.term-body > *, .term-body > * > *{
+  width: 100%;
 }
 
 .prompt {

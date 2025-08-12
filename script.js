@@ -1,6 +1,7 @@
 const workSpace = document.getElementById('workSpace');
 
 let foucsedTerm = null;
+let terminals = 0;
 const promptMessage = 'zerobors@void ~ $'
 const commands = {
   help: 'i can not help you right now!<br>',
@@ -8,7 +9,7 @@ const commands = {
   whoru: `
   <p>Hi! I’m <b>Ehab Hegazy</b>, a Fullstack developer who loves 
    Linux, backend dev, and making lovley UI like this terminal portfolio.</p><br>
-  <img src="./assets/me.jpg" width="40%"/>
+  <img src="./assets/me.jpg" style="width:30%;"/>
   <p>Yeah this guy is Me :D`,
   skills: `
   <p><p>Languages:</p> C, Python, JavaScript</p>
@@ -42,28 +43,54 @@ const commands = {
       <span> - An AI powered platform designed to automatically generate and assess quizzes, streamlining the process of creating and evaluating assessments. The platform offers advanced features to enhance both teaching and learning experiences, providing instant feedback and integrating seamlessly with Learning Management Systems (LMS).</span>
     </li>
   </ul>
-</div>
-
-  `
-
+</div>`
 }
 
 document.body.addEventListener('keydown', (e) => {
   if (e.metaKey && e.key == 'Enter') {
-    const term = createTerm()
-    foucsedTerm =  term.dataset.id
-    workSpace.appendChild(term)
-    console.log('term created')
+	  if(terminals == 0) {
+		  const newTerm = createTerm()
+			workSpace.appendChild(newTerm)
+      focusTerm(newTerm)
+		  return
+	  }
+	  newTerm();
   }
 });
 
+function focusTerm(term) {
+  if(foucsedTerm)
+    foucsedTerm.classList.remove('focused')
+  term.classList.add('focused')
+  term.getElementsByTagName('input')[0].focus()
+  foucsedTerm = term
+}
+
+function log(){
+  console.log(foucsedTerm.getElementsByTagName('div')[0].innerHTML)
+}
+
+function newTerm() {
+    const term = createTerm()
+	const termParent = foucsedTerm.parentElement
+	const container = document.createElement('div')
+	container.classList.add('term-container')
+	container.classList.add(foucsedTerm.offsetWidth < foucsedTerm.offsetHeight ? 'column' : 'row')
+  container.append(foucsedTerm, term)
+  termParent.appendChild(container)
+  focusTerm(term)
+}
+
 function createTerm() {
   const term = document.createElement('div');
-  term.dataset.id = 1; //change it alter
+  //term.dataset.id = 1; //change it alter
   term.classList.add('terminal')
-  term.classList.add('focused')
+  term.onclick = function() {
+    focusTerm(term)
+  }
 
   const termBody = document.createElement('div');
+  termBody.classList.add('term-body')
 
   const termInput = document.createElement('div')
   termInput.classList.add('input-container')
@@ -75,14 +102,14 @@ function createTerm() {
   const input = document.createElement('input')
   input.setAttribute('type', 'text')
   input.onkeydown = function (e) {
-    if (e.key  == "Enter") {
+    if (e.key  == "Enter" && !e.metaKey) {
       excuteCommand(e.target)
       e.target.value = ''
     }
   }
   termInput.append(prompt, input) 
-  term.appendChild(termBody)
-  term.appendChild(termInput)
+  term.append(termBody, termInput)
+	terminals++;
   return term
 }
 
@@ -98,7 +125,7 @@ function excuteCommand(target) {
    }
   if (command != ''){
     if (!Object.keys(commands).includes(command)){
-      termBody.innerHTML += `<pre>Sorry <span class='bold red'>'${command}'</span> command were not found.\n try running 'help' for more information.</pre>`
+      termBody.innerHTML += `<p>Sorry <span class='red'>'${command}'</span> command were not found.\n try running 'help' for more information.</p>`
     }else
       termBody.innerHTML += commands[command]
   }
