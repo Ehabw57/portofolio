@@ -2,12 +2,10 @@
   padding: 0;
   margin: 0;
   font-family: monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
-  border: soild red 1px;
   box-sizing: border-box;
 }
 
 body{ 
-  height: 100svh;
   background-image: url('./assets/wallpaper.jpg');
   background-position: center;
   background-repeat: no-repeat;
@@ -16,30 +14,24 @@ body{
   font-size: 12px;
 }
 
-main {
-  width: 100%;
-  height: 100%;
+#workSpace {
+  width: 100vw;
+  height: 100svh;
   padding: 10px;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
 }
 
 .term-container, .input-container{
   display: flex;
 }
 
-.input-container {
-  justify-self: stretch;
-}
-
 .term-container {
-  align-self: stretch;
+  width: 100%;
+  height: 100%;
   flex: 1 1 0;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 5px;
 }
 
 .row {
@@ -54,22 +46,20 @@ main {
   border: 1px lightblue solid
 }
 
-img {
-  width: 30%
-}
-
 .terminal {
-  position: relative;
-  align-self: stretch;
-  justify-self: stretch;
-  background-color: rgba(0,0,30, .6);
-  border-radius: 10px;
-  padding: 10px;
   display: flex;
   flex-direction: column;
   flex: 1 1 0;
-  overflow: scroll;
-  scrollbar-width: none;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,30, .6);
+  border-radius: 10px;
+  padding: 10px;
+  position: relative;
+}
+
+.scale {
+  animation: scale 0.3s;
 }
 
 .terminal::after {
@@ -83,20 +73,34 @@ img {
 }
 
 input {
+  width: 85%;
+  display: inline-block;
   outline: 0;
   border: none;
   color: white;
   padding-left: 7px;
   background-color: transparent;
   font-size: inherit;
-  flex:1
+  flex:1 1 0;
 }
 
-.term-body > *, .term-body > * > *{
+.term-body {
   width: 100%;
+  overflow: scroll;
+  scrollbar-width: none;
+}
+
+@keyframes scale {
+  from {
+    transform: scale(0.2);
+  }
+  to {
+    transform: scale(1);
+  }
 }
 
 .prompt {
+  width: 12%;
   color: #b0c0ff;
 }
 
@@ -115,10 +119,4 @@ a {
 }
 .yellow {
   color: yellow
-}
-.bold {
-  font-weight: bolder;
-}
-.under-line {
-  text-decoration: underline;
 }

@@ -2,7 +2,7 @@ const workSpace = document.getElementById('workSpace');
 
 let foucsedTerm = null;
 let terminals = 0;
-const promptMessage = 'zerobors@void ~ $'
+const promptMessage = 'ehab@void ~ $'
 const commands = {
   help: 'i can not help you right now!<br>',
   whoami: '<p>I do not know, go ask <b>ChatGPT</b> or somthing.</p>',
@@ -47,14 +47,22 @@ const commands = {
 }
 
 document.body.addEventListener('keydown', (e) => {
-  if (e.metaKey && e.key == 'Enter') {
-	  if(terminals == 0) {
-		  const newTerm = createTerm()
-			workSpace.appendChild(newTerm)
-      focusTerm(newTerm)
-		  return
-	  }
-	  newTerm();
+  if (e.metaKey) {
+    if (e.key == 'Enter') {
+      if(terminals == 0) {
+        const newTerm = createTerm()
+        workSpace.appendChild(newTerm)
+        focusTerm(newTerm)
+      }else
+        newTerm();
+    } else if (e.key == 'j')
+      getClothestTerm('bottom')
+    else if (e.key == 'k')
+      getClothestTerm('top')
+    else if (e.key == 'h')
+      getClothestTerm('left')
+    else if (e.key == 'l')
+      getClothestTerm('right')
   }
 });
 
@@ -76,8 +84,9 @@ function newTerm() {
 	const container = document.createElement('div')
 	container.classList.add('term-container')
 	container.classList.add(foucsedTerm.offsetWidth < foucsedTerm.offsetHeight ? 'column' : 'row')
+  termParent.insertBefore(container, foucsedTerm)
+  foucsedTerm.classList.remove('scale')
   container.append(foucsedTerm, term)
-  termParent.appendChild(container)
   focusTerm(term)
 }
 
@@ -85,6 +94,7 @@ function createTerm() {
   const term = document.createElement('div');
   //term.dataset.id = 1; //change it alter
   term.classList.add('terminal')
+  term.classList.add('scale')
   term.onclick = function() {
     focusTerm(term)
   }
@@ -102,6 +112,8 @@ function createTerm() {
   const input = document.createElement('input')
   input.setAttribute('type', 'text')
   input.onkeydown = function (e) {
+    if (e.metaKey)
+      e.preventDefault()
     if (e.key  == "Enter" && !e.metaKey) {
       excuteCommand(e.target)
       e.target.value = ''
@@ -130,5 +142,50 @@ function excuteCommand(target) {
       termBody.innerHTML += commands[command]
   }
 
-  terminal.scrollTop = terminal.scrollHeight;
+  termBody.scrollTop = termBody.scrollHeight;
+}
+
+function getClothestTerm(direction) {
+  const {offsetLeft:cx, offsetTop:cy, offsetHeight:ch, offsetWidth:cw} = foucsedTerm
+  let distance = 1000;
+  let termDistance = 0;
+  let closeTerm = null;
+  const terms = document.querySelectorAll('.terminal')
+
+  for (const term of terms) {
+    if (term === foucsedTerm) 
+      continue
+    const {offsetLeft:tx, offsetTop:ty, offsetHeight:th, offsetWidth:tw} = term
+
+    if (direction == 'top') {
+      if (ty + th < cy)
+        termDistance = cy - (ty + th)
+      else
+        continue
+    } else if (direction == 'bottom') {
+      if (cy + ch < ty)
+        termDistance =  ty - (cy + ch)
+      else
+        continue
+    } else if (direction == 'left') {
+      if (cx > tx + tw)
+        termDistance = cx - (tx + tw)
+      else
+        continue
+    } else if ( direction == 'right') {
+      if (tx > cx + cw)
+        termDistance = tx - (cx + cw)
+      else
+        continue
+    }
+
+    if (termDistance < distance) {
+      distance = termDistance
+      closeTerm = term
+    }
+  }
+
+  if (closeTerm)
+    focusTerm(closeTerm)
+  return closeTerm
 }
