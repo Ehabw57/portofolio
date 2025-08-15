@@ -150,7 +150,8 @@ function getClothestTerm(direction) {
   let distance = 1000;
   let termDistance = 0;
   let closeTerm = null;
-  const terms = document.querySelectorAll('.terminal')
+  const terms = Array.from(document.querySelectorAll('.terminal'))
+  terms.sort((a, b) => a.offsetLeft - b.offsetLeft)
 
   for (const term of terms) {
     if (term === foucsedTerm) 
