@@ -55,7 +55,9 @@ document.body.addEventListener('keydown', (e) => {
         focusTerm(newTerm)
       }else
         newTerm();
-    } else if (e.key == 'j')
+    } else if (e.key == 'q')
+      closeTerm()
+    else if (e.key == 'j')
       getClothestTerm('bottom')
     else if (e.key == 'k')
       getClothestTerm('top')
@@ -67,6 +69,8 @@ document.body.addEventListener('keydown', (e) => {
 });
 
 function focusTerm(term) {
+  if (!term)
+    return
   if(foucsedTerm)
     foucsedTerm.classList.remove('focused')
   term.classList.add('focused')
@@ -125,11 +129,30 @@ function createTerm() {
   return term
 }
 
+function closeTerm() {
+  if(terminals == 1) {
+    terminals--;
+    foucsedTerm.remove()
+    return
+  }
+  const container = foucsedTerm.parentElement
+  let siblingTerm = container.children[0] === foucsedTerm
+    ? container.children[1]
+    : container.children[0]
+  container.parentElement.insertBefore(siblingTerm, container)
+  foucsedTerm.remove()
+  terminals--;
+  if (!siblingTerm.classList.contains('terminal')) {
+    siblingTerm = siblingTerm.querySelectorAll('.terminal')[0]
+  }
+  container.remove()
+  focusTerm(siblingTerm)
+}
+
 function excuteCommand(target) {
   const termBody = target.parentElement.previousSibling
-  const terminal = termBody.parentElement;
   const command = target.value
-  termBody.innerHTML += `<pre class='blue'>${promptMessage} <span class="white">${command}</span></pre>`
+  termBody.innerHTML += `<span class='blue'>${promptMessage}</span> <span class="white">${command}</span><br>`
     
    if(command == 'clear') {
      termBody.innerHTML = ''
@@ -151,7 +174,7 @@ function getClothestTerm(direction) {
   let termDistance = 0;
   let closeTerm = null;
   const terms = Array.from(document.querySelectorAll('.terminal'))
-  terms.sort((a, b) => a.offsetLeft - b.offsetLeft)
+  terms.sort((a, b) => a.offsetLeft == b.offsetLeft ?  a.offsetTop - b.offsetTop : a.offsetLeft - b.offsetLeft)
 
   for (const term of terms) {
     if (term === foucsedTerm) 
